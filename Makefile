@@ -1,13 +1,8 @@
 # Makefile for compiling an assembly program with NASM
 
-# Target executable name
-TARGET = hello_world
-
-# Source file(s)
-SRC = $(TARGET).asm
-
-# Object file(s)
-OBJ = $(TARGET).o
+SOURCES = $(wildcard *.asm)
+OBJECTS = $(SOURCES:.asm=.o)
+TARGETS = $(SOURCES:.asm=.exe)
 
 # NASM compiler flags
 NASM_FLAGS = -f elf
@@ -15,20 +10,17 @@ NASM_FLAGS = -f elf
 # Linker flags
 LD_FLAGS = -m elf_i386 
 
-# Default rule
-all: $(TARGET)
+all: $(TARGETS)
 
-# Rule to assemble the .asm file to an object file
-$(OBJ): $(SRC)
-	nasm $(NASM_FLAGS) -o $(OBJ) $(SRC)
+$(TARGETS): $(OBJECTS)
+	ld $(LD_FLAGS) -o $@ $<
 
-# Rule to link the object file to create the executable
-$(TARGET): $(OBJ)
-	ld $(LD_FLAGS) -o $(TARGET) $(OBJ)
+$(OBJECTS): $(SOURCES)
+	nasm $(NASM_FLAGS) -o $@ $<
 
 # Clean up generated files
 clean:
-	rm -f $(OBJ) $(TARGET)
+	rm -f $(TARGETS) $(OBJECTS)
 
 # PHONY targets to prevent conflict with files named 'clean' or 'all'
 .PHONY: all clean
