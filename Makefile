@@ -2,12 +2,14 @@
 
 SOURCES = $(wildcard *.asm)
 OBJECTS = $(SOURCES:.asm=.o)
-TARGETS = $(SOURCES:.asm=.exe)
+TARGETS = $(SOURCES:.asm=)
 
 # NASM compiler flags
+# elf is object file format for Linux
 NASM_FLAGS = -f elf
 
 # Linker flags
+# elf_i386 is object file format for 32-bit x86 architecture
 LD_FLAGS = -m elf_i386 
 
 all: $(TARGETS)
