@@ -1,4 +1,3 @@
-# Makefile for compiling an assembly program with NASM
 
 SOURCES = $(wildcard *.asm)
 OBJECTS = $(SOURCES:.asm=.o)
@@ -14,10 +13,10 @@ LD_FLAGS = -m elf_i386
 
 all: $(TARGETS)
 
-$(TARGETS): $(OBJECTS)
+$(TARGETS): % : %.o
 	ld $(LD_FLAGS) -o $@ $<
 
-$(OBJECTS): $(SOURCES)
+%.o: %.asm
 	nasm $(NASM_FLAGS) -o $@ $<
 
 # Clean up generated files
